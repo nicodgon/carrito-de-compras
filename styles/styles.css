@@ -1,0 +1,268 @@
+*{
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #aaa;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #000;
+    border-radius: 20px;
+  }
+
+/* Barra de navegación */
+.logo {
+    font-family: 'Raleway', sans-serif;
+    color: #fff;
+    font-size: 1.8em;
+    padding-left: .6em;
+    text-decoration: none;
+}
+
+.contenedor__nav {
+    background-color: #000;
+}
+
+.barra__superior{
+    display: flex;
+    justify-content: space-between;
+}
+
+#cotización {
+    color: #fff;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 1.2em;
+    margin-top: auto;
+}
+
+/* Parte principal */
+.principal {
+    padding-bottom: 4em;
+    background-color: #ddd;
+}
+
+.principal h1 {
+    font-weight: bold;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    text-align: center;
+    font-size: 2em;
+}
+
+.principal h3 {
+    color: #fff;
+}
+
+/* Imagenes */
+.contenedor__imagen {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.zapatilla {
+    width: 14em;
+    border-radius: 8px;
+}
+
+.contenedor__imagen div {
+    width: 90%;
+    height: 24em;
+    box-shadow: 0 0 5px #000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    margin: 2em 0;
+    background-color: #fff;
+}
+
+.contenedor__imagen span {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 1.4em;
+}
+
+.botón {
+    margin-top: 2em;
+    width: 10em;
+    height: 2.2em;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+}
+
+.cant {
+    width: 3em;
+    border-radius: 5px;
+    background-color: #aaa;
+}
+
+/* Carrito */
+.vacío {
+    text-align: center;
+    font-size: 1.5em;
+}
+
+.contenedor__elemento {
+    display: grid;
+    grid-template-columns: 1.5em 4em 3em 1fr;
+}
+
+.contenedor__elemento p{
+    font-family: 'Times New Roman', Times, serif
+}
+
+.contenedor__total p{
+    font-family: 'Times New Roman', Times, serif
+}
+
+.nombre {
+    font-weight: bold;
+}
+
+.cantidad {
+    text-align: center;
+}
+
+.subtotal {
+    display: flex;
+}
+
+/* Total */
+.contenedor__total {
+    margin-top: 1em;
+    display: flex;
+    justify-content: space-between;
+}
+
+.total__texto {
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.total__num {
+    width: 8em;
+    font-size: 1.2em;
+    background-color: #000;
+    border-radius: 15px;
+    text-align: center;
+    color: #fff;
+}
+
+/* Footer */
+.inferior {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-top: .5em;
+    background-image: linear-gradient(rgb(111, 111, 111), 10%, #000, 90%, rgb(58, 58, 58));
+}
+
+.inferior ul {
+    padding: 0;
+    display: flex;
+    gap: 1em;
+}
+
+.inferior li {
+    list-style-type: none;
+}
+
+.inferior li img {
+    width: 20px;
+}
+
+.inferior p {
+    color: #fff;
+}
+
+/* Responsive */
+@media only screen and (min-width:768px) {
+    /* Parte principal */
+    .principal h1 {
+        font-size: 4em;
+    }
+
+    /* Imagenes */
+    .contenedor__imagen {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        row-gap: 10em;
+    }
+    
+    .contenedor__imagen div {
+        display: flex;
+        margin: 0 auto;
+        width: 25em;
+        height: 30em;
+    }
+
+    .zapatilla {
+        width: 20em;
+        border-radius: 8px;
+    }
+
+    .botón:active {
+        background-color: #666;
+    }
+
+    /* Carrito */
+    .contenedor__elemento {
+        grid-template-columns: 3em 14em 6em 1fr;
+    }
+    
+    .contenedor__elemento p{
+        font-size: 1.4em;
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+
+    .basura {
+        display: flex;
+        margin: auto;
+        width: 2em;
+        cursor: pointer;
+    }
+    
+    /* Footer */
+    .inferior li img {
+        width: 30px;
+    }
+
+    .inferior ul {
+        gap: 2em;
+    }
+
+    .inferior p {
+        color: #fff;
+    }
+}
+
+@media (hover:hover){
+    .prod__container:hover img{
+        transform: scale(1.2);
+        transition: transform .5s;
+    }
+
+    .basura:hover {
+        color: red;
+        transform: scale(1.1);
+    }
+
+    .inferior li img:hover {
+        transform: scale(1.2);
+    }
+
+    .botón:hover {
+        cursor: pointer;
+    }
+}
