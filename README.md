@@ -2,7 +2,7 @@
 
 [![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&color=F70066&random=false&width=435&lines=TIENDA+GAMER)](https://git.io/typing-svg)
 
-#### Responsive: :tw-2705:
+#### Responsive: ✅
 
 ------------
 
