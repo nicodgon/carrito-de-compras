@@ -44,7 +44,7 @@
 /* Parte principal */
 .principal {
     padding-bottom: 4em;
-    background-color: #ddd;
+    background-color: #ccc;
 }
 
 .principal h1 {
@@ -81,7 +81,7 @@
     align-items: center;
     border-radius: 10px;
     margin: 2em 0;
-    background-color: #fff;
+    background-color: #ccc;
 }
 
 .contenedor__imagen span {
