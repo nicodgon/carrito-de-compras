@@ -143,12 +143,12 @@
     justify-content: space-between;
 }
 
-.total__texto {
+#total__texto {
     font-weight: bold;
     font-size: 1.2em;
 }
 
-.total__num {
+#total__num {
     width: 8em;
     font-size: 1.2em;
     background-color: #000;

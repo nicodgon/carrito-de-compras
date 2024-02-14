@@ -1,3 +1,5 @@
+"use strict";
+
 // Variables
 const productos = [
   {
@@ -27,15 +29,21 @@ const productos = [
     nombre: "Zapatilla negra",
     precio: 39,
     cant: 1,
-  }
+  },
 ];
-urlApi = `https://api.bluelytics.com.ar/v2/latest`;
-carrito = [];
-contenedorCotización = document.getElementById("cotización");
-contenedorZapatillas = document.getElementById("contenedor__prod");
-contenedorCarrito = document.getElementById("contenedor__carrito");
-contenedorTotal = document.getElementById("total");
-btnCompra = document.getElementById("botón__comprar");
+const urlApi = `https://api.bluelytics.com.ar/v2/latest`;
+let carrito = [];
+const contenedorCotización = document.getElementById("cotización");
+const contenedorZapatillas = document.getElementById("contenedor__prod");
+const contenedorCarrito = document.getElementById("contenedor__carrito");
+const carritoVacío = document.getElementById("carrito__vacío");
+const contenedorTotalTexto = document.getElementById("total__texto");
+const contenedorTotalNum = document.getElementById("total__num");
+const btnCompra = document.getElementById("botón__comprar");
+
+function escapeHTML(valor) {
+  return valor.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
 
 // Agregar todos los productos al body
 productos.forEach((prod) => {
@@ -53,14 +61,18 @@ productos.forEach((prod) => {
   const btnAgregarAlCarrito = document.getElementById(prod.id);
   btnAgregarAlCarrito.addEventListener("click", (event) => {
     event.preventDefault();
-    const cant = document.getElementById(`cantidad${prod.id}`);
-    const input = cant.value;
-    agregarZapatilla(prod.id, input);
+    const cantInput = document.getElementById(`cantidad${prod.id}`).value;
+    const cantidad = parseInt(escapeHTML(cantInput));
+    if (!isNaN(cantidad) && cantidad > 0) {
+      agregarZapatilla(prod.id, cantidad);
+    } else {
+      alert("Por favor ingrese una cantidad válida.");
+    }
   });
 });
 
 // Texto inicial del modal
-contenedorCarrito.innerHTML = `<p class='vacío'>El carrito está vacío</p>`;
+carritoVacío.textContent = `El carrito está vacío`;
 
 // Agregar los productos al modal del carrito
 function sumarAlCarrito() {
@@ -68,27 +80,25 @@ function sumarAlCarrito() {
     (acc, prod) => acc + prod.precio * prod.cant,
     0
   );
-  contenedorCarrito.innerHTML = "";
+  carritoVacío.textContent = "";
+  contenedorCarrito.textContent = "";
+  contenedorTotalTexto.textContent = "Total:";
 
   // Agregar o eliminar los productos al modal
   carrito.forEach((prod) => {
     const subtotal = prod.cant * prod.precio;
     const elemento = `
         <div class='contenedor__elemento'>
-          <svg class='basura' id='basura(${prod.id})' xmlns="http://www.w3.org/2000/svg" width="20" height="26" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-          <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/></svg>
+          <img src="./imagenes/iconos/tacho.svg" class='basura' id='basura(${prod.id})'>
           <p class='nombre'>${prod.nombre}</p>
           <p class='cantidad'>x${prod.cant}</p>
           <p class='subtotal'>U$S ${subtotal}</p>
         </div>`;
-    const elementoTotal = `
-        <div class='contenedor__total'>
-          <p class='total__texto'>Total:</p>
-          <p class='total__num'>U$S ${totalNum}</p>
-        </div>`;
+    const elementoTotal = `U$S ${totalNum}`;
 
     contenedorCarrito.insertAdjacentHTML("beforeend", elemento);
-    contenedorTotal.innerHTML = elementoTotal;
+    contenedorTotalTexto.textContent = "Total:";
+    contenedorTotalNum.textContent = elementoTotal;
 
     const btnBasura = document.getElementById(`basura(${prod.id})`);
     btnBasura.addEventListener("click", () => {
@@ -98,8 +108,10 @@ function sumarAlCarrito() {
 
   // borrar el total cuando el carrito se vacía y mostrar texto
   function vacío() {
-    contenedorCarrito.innerHTML = `<p class='vacío'>El carrito está vacío</p>`;
-    contenedorTotal.innerHTML = "";
+    carritoVacío.textContent = `El carrito está vacío`;
+    contenedorCarrito.textContent = "";
+    contenedorTotalNum.textContent = "";
+    contenedorTotalTexto.textContent = "";
   }
   carrito.length === 0 && vacío();
 
@@ -108,20 +120,19 @@ function sumarAlCarrito() {
 }
 
 // Agregar una zapatilla a la lista carrito
-function agregarZapatilla(id, input) {
+function agregarZapatilla(id, cantidad) {
   // Buscar el producto por id
   const encontrar = carrito.some((product) => product.id === id);
-  if(encontrar){
+  if (encontrar) {
     // Sumar cantidad en la lista carrito
-    const encontrarProd = carrito.find(prod=>prod.id === id)
-    if(encontrarProd){
-      input = parseInt(prod.cant) + parseInt(input);
-      prod.cant = input;
+    const encontrarProd = carrito.find((prod) => prod.id === id);
+    if (encontrarProd) {
+      encontrarProd.cant += cantidad;
     }
-  }else{
+  } else {
     // Agregar la zapatilla a la lista carrito por primera vez
     const agregarProd = productos.find((product) => product.id === id);
-    agregarProd.cant = parseInt(input);
+    agregarProd.cant = cantidad;
     carrito.push(agregarProd);
   }
   sumarAlCarrito();
@@ -146,16 +157,18 @@ window.onload = () => {
 
 // Finalizar compra
 btnCompra.addEventListener("click", () => {
-  if (carrito.length != 0) {
+  if (carrito.length !== 0) {
     Swal.fire({
-      position: "top-center",
+      position: "center",
       icon: "success",
       title: "¡Su compra ha sido realizada con exito!",
       showConfirmButton: false,
       timer: 3000,
     });
-    contenedorCarrito.innerHTML = `<p class='vacío'>El carrito está vacío</p>`;
-    contenedorTotal.innerHTML = "";
+    carritoVacío.textContent = `El carrito está vacío`;
+    contenedorCarrito.textContent = "";
+    contenedorTotalNum.textContent = "";
+    contenedorTotalTexto.textContent = "";
     localStorage.removeItem("carrito");
     setTimeout(() => {
       location.reload();
@@ -169,7 +182,7 @@ const llamarApi = async () => {
     const response = await fetch(urlApi);
     const data = await response.json();
     const cotEnPesos = data.blue.value_sell;
-    contenedorCotización.innerHTML = `U$S 1 = $ ${cotEnPesos}`;
+    contenedorCotización.textContent = `U$S 1 = $ ${cotEnPesos}`;
   } catch (error) {
     console.log("Ha ocurrido un error");
   }
